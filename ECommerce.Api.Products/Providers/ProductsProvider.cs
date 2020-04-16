@@ -37,7 +37,7 @@ namespace ECommerce.Api.Products.Providers
             }
             dbContext.SaveChanges();
         }
-
+        
         public async Task<(bool IsSuccess, IEnumerable<Models.Product> Products, string ErrorMessage)> GetProductsAsync()
         {
             try
@@ -47,6 +47,25 @@ namespace ECommerce.Api.Products.Providers
                 {
                    var results = mapper.Map<IEnumerable<Db.Product>, IEnumerable<Models.Product>>(products);
                     return (true, results, null);
+                }
+                return (false, null, null);
+            }
+            catch (Exception ex)
+            {
+                logger?.LogError(ex.ToString());
+                return (false, null, ex.Message);
+            }
+        }
+
+        public async Task<(bool IsSuccess, Models.Product Product, string ErrorMessage)> GetProductAsync(int id)
+        {
+            try
+            {
+                var product = await dbContext.Products.FirstOrDefaultAsync(rec=> rec.Id == id);
+                if (product != null )
+                {
+                    var result = mapper.Map<Db.Product, Models.Product>(product);
+                    return (true, result, null);
                 }
                 return (false, null, null);
             }
