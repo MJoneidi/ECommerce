@@ -48,7 +48,7 @@ namespace ECommerce.Api.Products.Providers
                    var results = mapper.Map<IEnumerable<Db.Product>, IEnumerable<Models.Product>>(products);
                     return (true, results, null);
                 }
-                return (false, null, null);
+                return (false, null, "NotFound");
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace ECommerce.Api.Products.Providers
                     var result = mapper.Map<Db.Product, Models.Product>(product);
                     return (true, result, null);
                 }
-                return (false, null, null);
+                return (false, null, "NotFound");
             }
             catch (Exception ex)
             {
